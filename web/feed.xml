@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+  <title>Panzhenzhong · 技术笔记</title>
+  <link>https://panzhenzhong-cyber.github.io/ai_github/</link>
+  <description>记录代码、系统与 AI 实践。</description><language>zh-cn</language><lastBuildDate>Wed, 25 Nov 2026 12:00:00 +0800</lastBuildDate>
+  <item><title>从零搭建 Go CLI 的 CI/CD 发布链路</title><link>https://panzhenzhong-cyber.github.io/ai_github/posts/go-cli-cicd.html</link><guid>https://panzhenzhong-cyber.github.io/ai_github/posts/go-cli-cicd.html</guid><pubDate>Wed, 25 Nov 2026 12:00:00 +0800</pubDate><description>从一个最小 Go 命令行程序出发，搭建测试、静态检查、跨平台构建与自动发布。</description></item>
+</channel></rss>

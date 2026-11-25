@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="从最小 Go CLI 到测试、静态检查、跨平台构建和 GitHub Release 的完整实践。" />
+  <meta name="theme-color" content="#f4f0e7" /><title>从零搭建 Go CLI 的 CI/CD 发布链路 · Panzhenzhong</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml" /><link rel="stylesheet" href="../styles.css" /><script src="../app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header"><a class="brand" href="../" aria-label="返回首页"><span class="brand-mark">PZ</span><span>技术笔记</span></a><span></span><button class="theme-toggle" type="button" aria-label="切换深色主题"><span aria-hidden="true">◐</span></button></header>
+  <main id="main">
+    <header class="post-header"><p class="eyebrow">工程实践 / 2026.11.25</p><h1>从零搭建 Go CLI 的 CI/CD 发布链路</h1><p class="post-summary">一个几十行的程序也值得拥有可靠的交付方式。本文用 AI GitHub 项目说明，怎样把本地代码稳妥地送到可下载的跨平台二进制。</p><p class="article-meta"><span>Go</span><span>GitHub Actions</span><span>约 8 分钟</span></p></header>
+    <article class="post-body">
+      <p>这个项目的功能很简单：接收名字并输出问候，或者打印版本号。真正值得记录的不是功能本身，而是围绕它建立的一套完整工程闭环。</p>
+      <blockquote>目标不是“让 CI 亮绿灯”，而是让每次改变都经过同一套可重复的验证，并能产出用户真正可以运行的文件。</blockquote>
+      <h2>01. 先把程序边界变得可测试</h2>
+      <p>命令行程序经常把参数解析、业务逻辑和输出全部塞进 <code>main</code>。这样能跑，却很难测试。项目把可验证逻辑放进独立包，让入口只负责连接参数与输出。</p>
+      <pre><code>func Greeting(name string) string {
+    if strings.TrimSpace(name) == "" {
+        name = "World"
+    }
+    return fmt.Sprintf("Hello, %s!", name)
+}</code></pre>
+      <p>测试覆盖默认值和自定义名字。CI 不需要启动外部服务，就能快速判断核心行为有没有被破坏。</p>
+      <h2>02. 用一个命令统一本地与远程检查</h2>
+      <p>开发者在本地运行的检查，应该和 GitHub Actions 中执行的检查一致。项目用 <code>make check</code> 汇总格式、静态分析、测试和构建：</p>
+      <pre><code>check: fmt-check vet test build
+
+fmt-check:
+    test -z "$$(gofmt -l .)"
+vet:
+    go vet ./...
+test:
+    go test -race ./...
+build:
+    go build ./cmd/ai-github</code></pre>
+      <p>这减少了“本地可以、CI 不行”的差异，也让任何协作者——包括 Codex——都能在提交前执行相同的质量门槛。</p>
+      <h2>03. CI 负责证明每个提交仍然健康</h2>
+      <p>推送或 Pull Request 会触发工作流。它检出代码、安装指定 Go 版本，然后运行统一检查。依赖缓存交给 Go 工具链和 Actions 处理，配置保持短小透明。</p>
+      <p>这里最重要的设计是：CI 只验证源码，不悄悄修改仓库。格式错误直接失败，开发者在本地修正后重新提交，历史因此更清晰。</p>
+      <h2>04. 标签触发真正的跨平台发布</h2>
+      <p>当版本准备好后，推送形如 <code>v0.1.0</code> 的标签。发布工作流分别构建 Linux、macOS、Windows 的 amd64/arm64 文件，并为产物生成 SHA-256 校验值，最后附加到 GitHub Release。</p>
+      <pre><code>GOOS=linux   GOARCH=amd64 go build ...
+GOOS=darwin  GOARCH=arm64 go build ...
+GOOS=windows GOARCH=amd64 go build ...</code></pre>
+      <p>用户不需要安装 Go，也不需要信任某台开发电脑上的手工构建，只需下载对应平台文件并核对校验值。</p>
+      <h2>05. 把网站也放进同一条交付链路</h2>
+      <p><code>web/</code> 是纯 HTML、CSS 和 JavaScript，不依赖构建框架。只要该目录发生变化，Pages 工作流就上传静态文件并部署到 GitHub Pages。这个博客本身就是这条链路的产物。</p>
+      <h2>06. 让自动化提交保留清晰身份</h2>
+      <p>由 Codex 完成的提交使用单次 Git 身份参数，而不修改用户的全局配置：</p>
+      <pre><code>git -c user.name=Codex \
+    -c user.email=codex-bot@localhost \
+    commit -m "feat: ..."</code></pre>
+      <p>这样 <code>git log</code> 能明确显示提交者，同时用户自己的名字和邮箱保持不变。身份清晰，是人机协作流程中很小但很重要的一环。</p>
+      <h2>结语</h2>
+      <p>小项目是搭建工程能力的好地方：反馈快，问题边界清楚。最终我们得到的不只是一个 Go 二进制，而是一条从修改、验证、审查到发布和展示都可重复的路径。</p>
+    </article>
+  </main>
+  <footer class="post-footer"><a href="../">← 返回首页</a><p>© <span id="year">2026</span> Panzhenzhong</p><a href="https://github.com/panzhenzhong-cyber/ai_github">查看项目 ↗</a></footer>
+</body>
+</html>

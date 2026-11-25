@@ -1,41 +1,24 @@
-const form = document.querySelector("#greeting-form");
-const nameInput = document.querySelector("#name");
-const demoCommand = document.querySelector("#demo-command");
-const demoResult = document.querySelector("#demo-result");
-const versionButton = document.querySelector("#show-version");
-const copyButton = document.querySelector("#copy-install");
-
-function safeName(value) {
-  return value.trim() || "World";
-}
-
-function showGreeting(name) {
-  const target = safeName(name);
-  demoCommand.textContent = `./ai-github --name ${target}`;
-  demoResult.textContent = `Hello, ${target}!`;
-}
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  showGreeting(nameInput.value);
+const root = document.documentElement;
+const themeButton = document.querySelector(".theme-toggle");
+const navButton = document.querySelector(".nav-toggle");
+const nav = document.querySelector("#site-nav");
+const storedTheme = localStorage.getItem("theme");
+if (storedTheme === "dark" || (!storedTheme && matchMedia("(prefers-color-scheme: dark)").matches)) root.dataset.theme = "dark";
+themeButton?.addEventListener("click", () => {
+  const dark = root.dataset.theme !== "dark";
+  root.dataset.theme = dark ? "dark" : "light";
+  localStorage.setItem("theme", dark ? "dark" : "light");
 });
-
-versionButton.addEventListener("click", () => {
-  demoCommand.textContent = "./ai-github --version";
-  demoResult.textContent = "v0.1.0";
+navButton?.addEventListener("click", () => {
+  const open = navButton.getAttribute("aria-expanded") === "true";
+  navButton.setAttribute("aria-expanded", String(!open));
+  nav?.classList.toggle("is-open", !open);
 });
-
-copyButton.addEventListener("click", async () => {
-  const command = copyButton.dataset.copy;
-  try {
-    await navigator.clipboard.writeText(command);
-    copyButton.textContent = "Copied to clipboard";
-  } catch {
-    copyButton.textContent = command;
+nav?.addEventListener("click", (event) => {
+  if (event.target instanceof HTMLAnchorElement) {
+    navButton?.setAttribute("aria-expanded", "false");
+    nav.classList.remove("is-open");
   }
-  window.setTimeout(() => {
-    copyButton.textContent = "Copy install command";
-  }, 2200);
 });
-
-document.querySelector("#year").textContent = new Date().getFullYear();
+const year = document.querySelector("#year");
+if (year) year.textContent = String(new Date().getFullYear());
