@@ -2,6 +2,16 @@
 
 A small Go command-line application with automated CI and release delivery on GitHub Actions.
 
+## Website
+
+The project includes a responsive static frontend under `web/`. Pushes that change the frontend automatically deploy it with GitHub Pages.
+
+```bash
+python3 -m http.server 8000 --directory web
+```
+
+Then open `http://localhost:8000`.
+
 ## Run locally
 
 ```bash

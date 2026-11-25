@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="AI GitHub is a tiny Go CLI with automated testing and cross-platform releases."
+    />
+    <meta name="theme-color" content="#071411" />
+    <title>AI GitHub · Go CLI</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="AI GitHub home">
+        <span class="brand-mark" aria-hidden="true">AG</span>
+        <span>AI_GITHUB</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#demo">Demo</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#download">Download</a>
+      </nav>
+      <a
+        class="button button-small button-outline"
+        href="https://github.com/panzhenzhong-cyber/ai_github"
+        target="_blank"
+        rel="noreferrer"
+      >View source</a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Go 1.21 · Release v0.1.0</p>
+          <h1>A tiny Go CLI.<br /><em>Shipped everywhere.</em></h1>
+          <p class="hero-lede">
+            One focused command-line program, tested on every push and delivered as verified binaries for Linux, macOS, and Windows.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#demo">Try the command</a>
+            <button class="button button-quiet" id="copy-install" type="button" data-copy="go install github.com/panzhenzhong-cyber/ai_github/cmd/ai-github@latest">
+              Copy install command
+            </button>
+          </div>
+          <dl class="hero-stats" aria-label="Project facts">
+            <div><dt>5</dt><dd>release targets</dd></div>
+            <div><dt>4</dt><dd>CI quality gates</dd></div>
+            <div><dt>0</dt><dd>runtime dependencies</dd></div>
+          </dl>
+        </div>
+
+        <div class="terminal-shell" aria-label="Terminal preview">
+          <div class="terminal-bar">
+            <span class="terminal-dot dot-red"></span>
+            <span class="terminal-dot dot-yellow"></span>
+            <span class="terminal-dot dot-green"></span>
+            <span class="terminal-title">~/ai_github</span>
+          </div>
+          <div class="terminal-body" aria-live="polite">
+            <p><span class="prompt">❯</span> ./ai-github --name Codex</p>
+            <p class="terminal-output">Hello, Codex!</p>
+            <p><span class="prompt">❯</span> ./ai-github --version</p>
+            <p class="terminal-output">v0.1.0</p>
+            <p><span class="prompt">❯</span> sha256sum --check ai-github.sha256</p>
+            <p class="terminal-success">ai-github: OK</p>
+            <p class="terminal-cursor"><span class="prompt">❯</span> <span></span></p>
+          </div>
+          <div class="terminal-meta">
+            <span>CGO_ENABLED=0</span>
+            <span>exit 0</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" id="demo">
+        <div class="section-heading">
+          <p class="section-kicker">Interactive demo</p>
+          <h2>Run the idea in your browser.</h2>
+          <p>This mirrors the CLI’s current greeting and version behavior without installing anything.</p>
+        </div>
+
+        <div class="demo-panel">
+          <form id="greeting-form">
+            <label for="name">Who should the CLI greet?</label>
+            <div class="input-row">
+              <input id="name" name="name" type="text" value="Codex" maxlength="48" autocomplete="off" />
+              <button class="button button-primary" type="submit">Run command</button>
+            </div>
+          </form>
+          <div class="demo-output" aria-live="polite">
+            <div class="demo-command"><span>❯</span> <code id="demo-command">./ai-github --name Codex</code></div>
+            <p id="demo-result">Hello, Codex!</p>
+          </div>
+          <button class="text-button" id="show-version" type="button">Run <code>--version</code> instead</button>
+        </div>
+      </section>
+
+      <section class="pipeline-section" id="pipeline">
+        <div class="section-heading section-heading-light">
+          <p class="section-kicker">Delivery pipeline</p>
+          <h2>From commit to binary, automatically.</h2>
+        </div>
+        <ol class="pipeline" aria-label="Continuous delivery stages">
+          <li><span>01</span><h3>Commit</h3><p>Changes land on <code>main</code> with traceable authorship.</p></li>
+          <li><span>02</span><h3>Verify</h3><p>Format, vet, race tests, and compilation run as required gates.</p></li>
+          <li><span>03</span><h3>Build</h3><p>A version tag fans out into five deterministic target builds.</p></li>
+          <li><span>04</span><h3>Release</h3><p>Binaries and SHA-256 checksums publish to GitHub Releases.</p></li>
+        </ol>
+      </section>
+
+      <section class="download-section" id="download">
+        <div class="section-heading">
+          <p class="section-kicker">Release v0.1.0</p>
+          <h2>Choose your platform.</h2>
+          <p>Release downloads require access to the private GitHub repository.</p>
+        </div>
+        <div class="downloads">
+          <a href="https://github.com/panzhenzhong-cyber/ai_github/releases/tag/v0.1.0" target="_blank" rel="noreferrer"><strong>macOS</strong><span>Apple Silicon · ARM64</span><code>darwin-arm64</code></a>
+          <a href="https://github.com/panzhenzhong-cyber/ai_github/releases/tag/v0.1.0" target="_blank" rel="noreferrer"><strong>macOS</strong><span>Intel · AMD64</span><code>darwin-amd64</code></a>
+          <a href="https://github.com/panzhenzhong-cyber/ai_github/releases/tag/v0.1.0" target="_blank" rel="noreferrer"><strong>Linux</strong><span>x86-64</span><code>linux-amd64</code></a>
+          <a href="https://github.com/panzhenzhong-cyber/ai_github/releases/tag/v0.1.0" target="_blank" rel="noreferrer"><strong>Linux</strong><span>ARM64</span><code>linux-arm64</code></a>
+          <a href="https://github.com/panzhenzhong-cyber/ai_github/releases/tag/v0.1.0" target="_blank" rel="noreferrer"><strong>Windows</strong><span>x86-64 executable</span><code>windows-amd64.exe</code></a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Built in Go. Delivered by GitHub Actions.</p>
+      <p>© <span id="year"></span> AI_GITHUB</p>
+    </footer>
+  </body>
+</html>

@@ -5,6 +5,7 @@
 - This repository contains a small Go command-line application.
 - The executable entry point is `cmd/ai-github`.
 - Keep application logic in testable packages under `internal/`.
+- The static project website lives under `web/` and deploys through GitHub Pages.
 
 ## Required verification
 
@@ -23,6 +24,8 @@ Do not report a command as successful unless it was actually executed.
 - Keep the binary free of platform-specific dependencies unless explicitly required.
 - Do not commit generated binaries, coverage files, credentials, or secrets.
 - Keep GitHub Actions permissions at least privilege.
+- Keep the website buildless and accessible unless a framework is explicitly required.
+- Do not place repository secrets or private data in `web/`; GitHub Pages content is public.
 
 ## Git identity
 
